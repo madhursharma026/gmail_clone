@@ -1,0 +1,250 @@
+{% extends "gmail_layout.html" %}
+{% block title %}Starred - {{current_user.email}}{% endblock %}
+{% block body %}
+
+<style>
+    .starred_btn {
+        background: #E8EAED;
+    }
+
+    .starred_data_heading {
+        color: #E8EAED;
+    }
+</style>
+
+<div class="info_option_before_700px" style="margin-top: -195px; margin-left: 270px;">
+    <span class="dropdown">
+        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <input type="checkbox" id="select_mail" name="select_mail" value="yes"
+                style="height: 17px; width: 17px; margin-top: -2px;">
+        </button>
+    </span>
+    <a href="/starred" class="refresh_page" style="color: #9b9b9b; font-size: 20px; margin-left: 8px;"><i
+            class='fa fa-repeat'></i></a>
+    <i class="fa fa-ellipsis-v" style="font-size: 20px; margin-left: 25px; color: #9b9b9b;"></i>
+    <hr style="margin-top: -0px; color: rgb(192, 192, 192);">
+    <h4 style="margin-left: 20px;">Starred</h4>
+    <hr style="margin-top: -0px; color: rgb(192, 192, 192);">
+    <div class="emails_before_1200px">
+        <ul style="width: 99%; list-style: none;">
+            {% for getting_mail_details in getting_mail_details %}
+            <a href="/single_starred_email/email_id:{{getting_mail_details.id}}"
+                style="color: black; text-decoration: none;">
+                <li class="email_data" style="margin-top: -18px; padding: 6px;
+                {% if getting_mail_details.read_status == 'yes': %} 
+                background: rgb(237, 237, 237);
+                {% else %}
+                background: white;
+                {% endif %}">
+                    <div class="row">
+                        <div class="col-12 col-xl-4">
+                            <input type="checkbox">
+                            {% if getting_mail_details.email_star=='yes' %}
+                            <label class="star_email" style="margin-left: 10px;">
+                                <input type="checkbox" value="star_email" name="star_email" style="display: none;"
+                                    onClick="window.location='/star_email_inbox/email_id:{{getting_mail_details.id}}';" />
+                                <i class="fa fa-star un_star_email"
+                                    style="font-size: 16px; cursor:pointer; color: orange;"></i>
+                            </label>
+                            {% else %}
+                            <label class="star_email" style="margin-left: 10px;">
+                                <input type="checkbox" value="star_email" name="star_email" style="display: none;"
+                                    onClick="window.location='/star_email_inbox/email_id:{{getting_mail_details.id}}';" />
+                                <i class="fa fa-star un_star_email"
+                                    style="font-size: 16px; cursor:pointer; color: rgb(204, 204, 204);"></i>
+                            </label>
+                            {% endif %}
+                            {% if getting_mail_details.email_important=='yes' %}
+                            <label class="important_email" style="margin-left: 10px;">
+                                <input type="checkbox" value="important_email" name="important_email"
+                                    style="display: none;"
+                                    onClick="window.location='/important_email_inbox/email_id:{{getting_mail_details.id}}';" />
+                                <i class="fa fa-tag un_important_email"
+                                    style="font-size: 16px; cursor:pointer; color: orange;"></i>
+                            </label>
+                            {% else %}
+                            <label class="important_email" style="margin-left: 10px;">
+                                <input type="checkbox" value="important_email" name="important_email"
+                                    style="display: none;"
+                                    onClick="window.location='/important_email_inbox/email_id:{{getting_mail_details.id}}';" />
+                                <i class="fa fa-tag un_important_email"
+                                    style="font-size: 16px; cursor:pointer; color: rgb(204, 204, 204);"></i>
+                            </label>
+                            {% endif %}
+                            <span class="sender_email"
+                                style="margin-left: 13px; font-weight: 600; font-size: 15px;">{{sender_list[loop.index-1][:25]}}</span>
+                        </div>
+                        <div class="col-12 col-xl-8">
+                            <div class="row">
+                                <div class="col-xl-9" style="width: 90;">
+                                    <p><span style="position: absolute;"
+                                            class="email_content"><b>{{getting_mail_details.email_subject[:50]}}
+                                            </b>-
+                                            {% if 'Forwarded message' in getting_mail_details.email_content[3:-4] %}
+                                            {{getting_mail_details.email_content[3:-4][:60]|safe}}
+                                            {% elif 'img' in getting_mail_details.email_content[3:-4] %}
+                                            {{getting_mail_details.email_content[3:-4][:getting_mail_details.email_content.index('img')]|safe}}
+                                            {% elif 'br' in getting_mail_details.email_content[3:-4] %}
+                                            {{getting_mail_details.email_content[3:-4][:getting_mail_details.email_content.index('br')]|safe}}
+                                            {% else %}
+                                            {{getting_mail_details.email_content[3:-4][:100]|safe}}
+                                            {% endif %}</p></span>
+                                </div>
+                                <div class="col-xl-3 email_hover_icons" style="float: right; text-align: right;">
+                                    <span>
+                                        <label class="deleted_email">
+                                            <input type="checkbox" value="deleted_email" name="deleted_email"
+                                                style="display: none;"
+                                                onClick="window.location='/delete_email_starred/email_id:{{getting_mail_details.id}}';" />
+                                            <i class="fa fa-trash un_deleted_email"
+                                                style="font-size: 20px; margin-right: 32px; cursor: pointer;"></i>
+                                        </label>
+                                    </span>
+                                </div>
+                                <div class="email_time" style="float: right; text-align: right; margin-top: -10px;">
+                                    <span style="margin-right: 30px;"><b>{{getting_mail_details.email_time.strftime("%d
+                                            %b")}}</b></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </a>
+            <hr style="margin-top: -0px; color: rgb(192, 192, 192);">
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="emails_after_1200px" style="margin-left: 270px;">
+        <ul style="width: 99%; list-style: none;">
+            {% for getting_mail_details in getting_mail_details %}
+            <a href="/single_starred_email/email_id:{{getting_mail_details.id}}" style="text-decoration: none;">
+                <li class="email_data_after_1200px" style="margin-top: -10px;">
+                    <div class="row">
+                        <div class="col-1 mt-3" style="position: absolute;">
+                            <span
+                                style="border-radius: 100%; color: white; margin-right: 10px; background: blue; padding: 15px; margin-top: 40px;">
+                                <b style="font-size: 24px;">{{getting_mail_details.email_subject[:1]}}</b>
+                            </span>
+                        </div>
+                        <div class="col-11" style="margin-left: 60px;">
+                            <span class="email_sender_after_1200px" style="{% if getting_mail_details.read_status == 'yes': %} 
+                            color: #6C757D;
+                            {% else %}
+                            color: black;
+                            {% endif %}">
+                                <span style="font-size: 15.5px; font-weight: 600;">{{sender_list[loop.index-1][:25]}}
+                                    <label class="deleted_email email_hoverable_icons_after_1200px"
+                                        style="float: right; font-size: 14px">
+                                        <input type="checkbox" value="deleted_email" name="deleted_email"
+                                            style="display: none;"
+                                            onClick="window.location='/delete_email_starred/email_id:{{getting_mail_details.id}}';" />
+                                        <i class="fa fa-trash un_deleted_email"
+                                            style="font-size: 20px; margin-right: 32px; cursor: pointer;"></i>
+                                    </label>
+                                    <span style="float: right; font-size: 14px" class="email_time_after_1200px">
+                                        {{getting_mail_details.email_time.strftime("%d %b")}}</span></span>
+                                <p><b>{{getting_mail_details.email_subject[:40]}}</b></p>
+                                <p style="margin-top: -10px; width: 85%;" class="email_content_after_1200px">
+                                    {% if 'Forwarded message' in getting_mail_details.email_content[3:-4] %}
+                                    {{getting_mail_details.email_content[3:-4][:60]|safe}}
+                                    {% elif 'img' in getting_mail_details.email_content[3:-4] %}
+                                    {{getting_mail_details.email_content[3:-4][:getting_mail_details.email_content.index('img')]|safe}}
+                                    {% elif 'br' in getting_mail_details.email_content[3:-4] %}
+                                    {{getting_mail_details.email_content[3:-4][:getting_mail_details.email_content.index('br')]|safe}}
+                                    {% else %}
+                                    {{getting_mail_details.email_content[3:-4][:100]|safe}}
+                                    {% endif %}</p>
+                                {% if getting_mail_details.email_star == 'yes' %}
+                                <label class="star_email"
+                                    style="float: right; text-align: right; margin-top: -35px; margin-right: 35px; font-size: 20px;">
+                                    <input type="checkbox" value="star_email" name="star_email" style="display: none;"
+                                        onClick="window.location='/star_email_inbox/email_id:{{getting_mail_details.id}}';" />
+                                    <i class="fa fa-star un_star_email" style="cursor:pointer; color: orange;"></i>
+                                </label>
+                                {% else %}
+                                <label class="star_email"
+                                    style="float: right; text-align: right; margin-top: -35px; margin-right: 35px; font-size: 20px;">
+                                    <input type="checkbox" value="star_email" name="star_email" style="display: none;"
+                                        onClick="window.location='/star_email_inbox/email_id:{{getting_mail_details.id}}';" />
+                                    <i class="fa fa-star un_star_email"
+                                        style="cursor:pointer; color: rgb(204, 204, 204);"></i>
+                                </label>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </li>
+            </a><br>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="emails_after_700px">
+    <ul style="width: 99%; list-style: none;">
+        {% for getting_mail_details in getting_mail_details %}
+        <a href="/single_starred_email/email_id:{{getting_mail_details.id}}" style="text-decoration: none;">
+            <li class="email_data_after_1200px" style="margin-top: -10px;">
+                <div class="row">
+                    <div class="col-1 mt-3" style="position: absolute;">
+                        <span
+                            style="border-radius: 100%; color: white; margin-right: 10px; background: blue; padding: 15px; margin-top: 40px;">
+                            <b style="font-size: 24px;">{{getting_mail_details.email_subject[:1]}}</b>
+                        </span>
+                    </div>
+                    <div class="col-11" style="margin-left: 60px;">
+                        <span class="email_sender_after_1200px" style="{% if getting_mail_details.read_status == 'yes': %} 
+                        color: #6C757D;
+                        {% else %}
+                        color: black;
+                        {% endif %}">
+                            <span style="font-size: 15.5px; font-weight: 600;">{{sender_list[loop.index-1][:25]}}
+                                <label class="deleted_email email_hoverable_icons_after_1200px"
+                                    style="float: right; font-size: 14px">
+                                    <input type="checkbox" value="deleted_email" name="deleted_email"
+                                        style="display: none;"
+                                        onClick="window.location='/delete_email_starred/email_id:{{getting_mail_details.id}}';" />
+                                    <i class="fa fa-trash un_deleted_email"
+                                        style="font-size: 20px; margin-right: 32px; cursor: pointer;"></i>
+                                </label>
+                                <span style="float: right; font-size: 14px" class="email_time_after_1200px">
+                                    {{getting_mail_details.email_time.strftime("%d %b")}}</span></span>
+                            <p><b>{{getting_mail_details.email_subject[:40]}}</b></p>
+                            <p style="margin-top: -10px; width: 85%;" class="email_content_after_1200px">
+                                {% if 'Forwarded message' in getting_mail_details.email_content[3:-4] %}
+                                {{getting_mail_details.email_content[3:-4][:60]|safe}}
+                                {% elif 'img' in getting_mail_details.email_content[3:-4] %}
+                                {{getting_mail_details.email_content[3:-4][:getting_mail_details.email_content.index('img')]|safe}}
+                                {% elif 'br' in getting_mail_details.email_content[3:-4] %}
+                                {{getting_mail_details.email_content[3:-4][:getting_mail_details.email_content.index('br')]|safe}}
+                                {% else %}
+                                {{getting_mail_details.email_content[3:-4][:100]|safe}}
+                                {% endif %}</p>
+                            {% if getting_mail_details.email_star == 'yes' %}
+                            <label class="star_email"
+                                style="float: right; text-align: right; margin-top: -35px; margin-right: 35px; font-size: 20px;">
+                                <input type="checkbox" value="star_email" name="star_email" style="display: none;"
+                                    onClick="window.location='/star_email_inbox/email_id:{{getting_mail_details.id}}';" />
+                                <i class="fa fa-star un_star_email" style="cursor:pointer; color: orange;"></i>
+                            </label>
+                            {% else %}
+                            <label class="star_email"
+                                style="float: right; text-align: right; margin-top: -35px; margin-right: 35px; font-size: 20px;">
+                                <input type="checkbox" value="star_email" name="star_email" style="display: none;"
+                                    onClick="window.location='/star_email_inbox/email_id:{{getting_mail_details.id}}';" />
+                                <i class="fa fa-star un_star_email"
+                                    style="cursor:pointer; color: rgb(204, 204, 204);"></i>
+                            </label>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </li>
+        </a><br>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
